@@ -44,7 +44,8 @@ $(document).ready(function () {
             name: name,
             email: email,
             startDate: startDate,
-            monthlyRate: monthlyRate
+            monthlyRate: monthlyRate,
+            dateAdded: firebase.database.ServerValue.TIMESTAMP
         });
 
         // Code in the logic for storing and retrieving the most recent user.
@@ -53,17 +54,6 @@ $(document).ready(function () {
         $("#email-display").html(email);
         $("#startDate-display").html(startDate);
         $("#monthly-display").html(monthlyRate);
-
-
-        var firstRowTds = $("table")
-            .children()
-            .eq(1).children("tr")
-            .eq(1).children("td");
-        // Setting the inner text of each td in the first row
-        firstRowTds.eq(0).text(name);
-        firstRowTds.eq(2).text(startDate);
-        firstRowTds.eq(4).text(monthlyRate);
-
 
     });
 
@@ -74,7 +64,12 @@ $(document).ready(function () {
     database.ref().on("value", function(snapshot) {
 
         //Console logs the value from the snapshot online
-        console.log(snapshot.val());
+        console.log(snapshot);
+        console.log(snapshot.val().name);
+        console.log(snapshot.val().email);
+        console.log(snapshot.val().monthlyRate);
+        console.log(snapshot.val().startDate);
+
 
         //
         $("#name-display").html(snapshot.val().name);
@@ -89,21 +84,50 @@ $(document).ready(function () {
         monthlyRate = snapshot.val().monthlyRate;
 
 
-        var firstRowTds = $("table")
-            .children()
-            .eq(1).children("tr")
-            .eq(0).children("td");
-        // Setting the inner text of each td in the first row
-        firstRowTds.eq(0).text(snapshot.val().name);
-        firstRowTds.eq(2).text(snapshot.val().startDate);
-        firstRowTds.eq(4).text(snapshot.val().monthlyRate);
-
         //Catches any errors
     }, function(errorObject) {
 
         //Logs into the console log
         console.log("The read failed: " + errorObject.code);
     });
+
+
+    database.ref().on("child_added", function(childSnapshot) {
+
+
+        var theChild = childSnapshot.val();
+
+        var table = $("#tableBody");
+
+        var tableRow = $("<tr>");
+
+
+        table.append(tableRow);
+
+        tableRow.append("<td>" + theChild.name + "</td>");
+        tableRow.append("<td>" + theChild.name + "</td>");
+        tableRow.append("<td>" + theChild.startDate + "</td>");
+        tableRow.append("<td>" + theChild.name + "</td>");
+        tableRow.append("<td>" + theChild.monthlyRate + "</td>");
+        tableRow.append("<td>" + theChild.name + "</td>");
+
+
+    }, function(errorObject) {
+
+        //Logs into the console log
+        console.log("The read failed: " + errorObject.code);
+
+    });
+
+    database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function (snapshot) {
+
+        // Change the HTML to reflect
+        $("#name-display").html(snapshot.val().name);
+        $("#email-display").html(snapshot.val().email);
+        $("#startDate-display").html(snapshot.val().startDate);
+        $("#monthly-display").html(snapshot.val().monthlyRate);
+    });
+
 
 
 
