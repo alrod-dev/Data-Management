@@ -1,0 +1,59 @@
+/*
+    Global Page Settings
+ */
+
+@font-face {
+
+    font-family: Typography Regular;
+    src: url("../fonts/Typography Times Regular.ttf") ;
+
+}
+
+@font-face {
+
+    font-family: TypographyBold;
+    src: url("../fonts/Typography Times Bold.ttf");
+
+}
+
+.container-fluid {
+    width: 85%;
+}
+
+/*Sets the background images to the body*/
+body {
+    background: url("../images/background.png");
+
+    /* Center and scale the image nicely */
+    background-size: cover;
+
+    font-family: "Times New Roman";
+}
+
+#jumboTron {
+    margin-top: 2%;
+
+}
+
+#jumboTron h1 {
+
+    font-family: Typography Bold;
+
+}
+
+#memberSignUp
+{
+    overflow: hidden;
+}
+
+.display-2
+{
+    font-family: TypographyBold;
+
+    font-size: 40px;
+}
+
+.display-3, .display-4
+{
+    font-size: 20px;
+}
